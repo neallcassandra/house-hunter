@@ -2,7 +2,7 @@
 Realtor API scraper with rate limiting.
 
 Uses the Realtor API Data endpoint on RapidAPI. Caps at 40 API calls per run
-to stay within the free tier (10k calls/month, ~8 runs/day).
+to stay within the pro tier (10k calls/month, ~8 runs/day).
 
 API: https://rapidapi.com/nusantaracodedotcom/api/realtor-api-data
 """
