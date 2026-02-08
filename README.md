@@ -2,13 +2,13 @@
 
 Automated house search that scrapes listings, filters them with GPT-4o-mini, and pings me on Telegram when something good comes up.
 
-I built this because I was tired of checking Zillow/Realtor every day. It runs on a schedule on an EC2 instance, remembers what it's already seen, and only bothers me when there's a real match.
+I built this because I was tired of checking Zillow/Realtor every day. It runs on a schedule on an AWS EC2 instance, remembers what it's already seen, and only updates me when there's a close/complete match.
 
 ## What it looks like
 
 Heavy on the emojis since it's a personal project, but it makes the notifications easy to scan at a glance.
 
-<img src="docs/telegram_screenshot.jpg" width="350" alt="Telegram notification examples">
+<img src="telegram_screenshot.jpg" width="350" alt="Telegram notification examples">
 
 ## How it works
 
@@ -27,13 +27,13 @@ Realtor    GPT-4o-mini  Telegram
          tracking)
 ```
 
-**Scraper** hits the Realtor API via RapidAPI. Does a cheap list query per city, filters client-side by price, then fetches full details only for what survives. Caps at 40 API calls per run to stay within the free tier (10k/month).
+**Scraper** hits the Realtor API via RapidAPI. Does a query per city, filters client-side by price, then fetches full details only for what survives. Caps at 40 API calls per run to stay within the pro tier (10k/month).
 
 **Reviewer** does a quick pass first (price, location, age, pool - instant rejection) then sends survivors to GPT-4o-mini for deeper analysis. It checks for finished basements specifically since the API data is inconsistent about that - sometimes it's in `details`, sometimes in `features`, sometimes only in the description text.
 
 **Summarizer** formats the results and sends them to Telegram with inline "View Listing" buttons. Also includes some market context (days on market, price vs. city average). If nothing passes on a run, it'll send the closest miss so I know what's out there.
 
-The whole thing is stateful via SQLite so it won't re-notify me about the same property, and it tracks price history so it can alert on price drops.
+The whole thing is tracked via SQLite so it won't re-notify me about the same property, and it tracks price history so it can alert on price drops.
 
 ## Setup
 
@@ -115,7 +115,7 @@ sudo systemctl start house-hunter
 journalctl -u house-hunter -f
 ```
 
-That's it. It'll start on boot and restart if it crashes. Total cost is ~$0/month on the free tier (the EC2 instance is free, and the API costs are negligible).
+That's it. It'll start on boot and restart if it crashes. Total cost is ~$0/month on the free tier (the EC2 instance is free, and the API costs depend on the API usage for AI and Realtor API).
 
 ## Configuration
 
@@ -124,7 +124,7 @@ All via env vars, see `.env.example` for the full list. The important ones beyon
 - `HOUSE_HUNTER_SUBURBS` - comma-separated cities to search (e.g. `Westlake,Bay Village,Rocky River`)
 - `HOUSE_HUNTER_STATE` - two-letter state code, defaults to `OH`
 - `HOUSE_HUNTER_MIN_PRICE` / `HOUSE_HUNTER_MAX_PRICE` - price range
-- `HOUSE_HUNTER_AVOID_CITIES` - cities to skip even if they show up in results
+- `HOUSE_HUNTER_AVOID_CITIES` - cities to skip even if they show up in results, this was added to catch odd outliers that would sneak through
 - `HOUSE_HUNTER_TIMEZONE` - for the scheduler, defaults to `US/Eastern`
 
 Optionally enable [LangSmith](https://smith.langchain.com) tracing if you want to debug the LangGraph workflow.
