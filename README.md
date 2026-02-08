@@ -46,7 +46,7 @@ pip install -e .
 
 You'll need three things:
 - **OpenAI API key** for the GPT-4o-mini reviewer ([get one here](https://platform.openai.com/api-keys))
-- **RapidAPI key** for the Realtor API Data endpoint ([sign up](https://rapidapi.com/nusantaracodedotcom/api/realtor-api-data), free tier is 10k calls/month)
+- **RapidAPI key** for the Realtor API Data endpoint ([sign up](https://rapidapi.com/nusantaracodedotcom/api/realtor-api-data), free tier is 200 calls/month)
 - **Telegram bot** - create one via [@BotFather](https://core.telegram.org/bots#how-do-i-create-a-bot), then get your chat ID from the `/getUpdates` endpoint
 
 Everything else in `.env.example` has sensible defaults.
@@ -115,7 +115,7 @@ sudo systemctl start house-hunter
 journalctl -u house-hunter -f
 ```
 
-That's it. It'll start on boot and restart if it crashes. Total cost is ~$0/month on the free tier (the EC2 instance is free, and the API costs depend on the API usage for AI and Realtor API).
+That's it. It'll start on boot and restart if it crashes. Total cost is $1-$7 a month (the EC2 instance is free, and the API costs depend on the API usage for AI and Realtor API).
 
 ## Configuration
 
