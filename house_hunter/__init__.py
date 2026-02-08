@@ -1,0 +1,3 @@
+"""House Hunter - automated property search and notification system."""
+
+__version__ = "1.0.0"
