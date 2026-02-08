@@ -6,7 +6,7 @@ I built this because I was tired of checking Zillow/Realtor every day. It runs o
 
 ## What it looks like
 
-Heavy on the emojis since it's a personal project, but it makes the notifications easy to scan at a glance.
+The result is an automated message in Telegram. It's heavy on the emojis since it's a personal project, but it makes the notifications easy to scan at a glance.
 
 <img src="telegram_screenshot.jpg" width="350" alt="Telegram notification examples">
 
